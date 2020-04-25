@@ -1,8 +1,15 @@
+// Load the full build.
 var _ = require('lodash');
+// Load the core build.
 var _ = require('lodash/core');
+// Load the FP build for immutable auto-curried iteratee-first data-last methods.
 var fp = require('lodash/fp');
+
+// Load method categories.
 var array = require('lodash/array');
 var object = require('lodash/fp/object');
+
+// Cherry-pick methods for smaller browserify/rollup/webpack bundles.
 var at = require('lodash/at');
 var curryN = require('lodash/fp/curryN');
 
@@ -22,11 +29,18 @@ function distance(point){
 }
 
 //Getting the distance and bucket number
-const chain = _.chain(outputs)
-    .map(row => [distance(row[0]), row[3]])
-    .sortBy(row => row[0])
-    .slice(0,k)
-    .cou
-    .value()
+
+ let chain =   _.chain(outputs)
+        .map(row => [distance(row[0]), row[3]])
+        .sortBy(row => row[0])
+        .slice(0,k)
+        .countBy(row => row[1])
+        .toPairs()
+        .sortBy(row => row[1])
+        .last()
+        .first()
 
 console.log(chain);
+
+
+
