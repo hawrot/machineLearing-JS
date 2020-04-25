@@ -26,9 +26,22 @@ console.log('Sort by first element:');
 console.log(_.sortBy(numbers));
 console.log(' ');
 
-
+//sorting by second element
 console.log('Sort by second  element:');
 console.log(_.sortBy(numbers, function (row){
     return row[1];
 }
 ));
+console.log(' ');
+
+
+//assign elements
+const sorted = _.sortBy(numbers, row => row[1]);
+
+//extract just second element from the array
+console.log('Extract just second element from the array');
+console.log(_.map(sorted, row => row[1]));
+console.log(' ');
+
+
+
