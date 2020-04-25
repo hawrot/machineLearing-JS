@@ -15,11 +15,18 @@ const outputs =
     ];
 
 const predictionPoint = 300;
+const k = 3;
 
 function distance(point){
     return Math.abs(point - predictionPoint);
 }
 
 //Getting the distance and bucket number
-_.chain(outputs)
-.map(row => [distance(row[0]), row[3]])
+const chain = _.chain(outputs)
+    .map(row => [distance(row[0]), row[3]])
+    .sortBy(row => row[0])
+    .slice(0,k)
+    .cou
+    .value()
+
+console.log(chain);
