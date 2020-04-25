@@ -41,7 +41,19 @@ const sorted = _.sortBy(numbers, row => row[1]);
 //extract just second element from the array
 console.log('Extract just second element from the array');
 console.log(_.map(sorted, row => row[1]));
+const mapped = _.map(sorted, row => row[1]);
 console.log(' ');
+
+//Using chain
+console.log('Using chain to minimise the work');
+
+ const chain = _.chain(numbers)
+                     .sortBy(row => row[1])
+                      .map(row => row[1])
+                           .value();
+console.log(chain);
+
+
 
 
 
