@@ -11,6 +11,11 @@ const k = 3;
 function runAnalysis() {
   const [testSet, trainingSet] = splitDataset(outputs, 10);
 
+  for (let i = 0; i< testSet.length; i++){
+   const bucket =  knn(trainingSet, testSet[i][0]);
+    console.log(bucket, testSet[i][3]);
+  }
+
 }
 
 
