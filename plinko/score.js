@@ -5,7 +5,7 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 
 }
 
-const predictionPoint = 300;
+
 const k = 3;
 
 function runAnalysis() {
@@ -14,13 +14,11 @@ function runAnalysis() {
   console.log('Point will fall into bucket: ' + bucket);
 }
 
-function distance(point) {
-  return Math.abs(point - predictionPoint);
-}
 
-function knn(){
-return  _.chain(outputs)
-      .map(row => [distance(row[0]), row[3]])
+
+function knn(dataset, point){
+return  _.chain(dataset)
+      .map(row => [distance(row[0], point), row[3]])
       .sortBy(row => row[0])
       .slice(0,k)
       .countBy(row => row[1])
@@ -31,6 +29,11 @@ return  _.chain(outputs)
       .parseInt()
       .value();
 }
+
+function distance(pointA, pointB) {
+  return Math.abs(pointA - pointB);
+}
+
 function splitDataset(data, testCount){
   const shuffled = _.shuffle(data);
 
