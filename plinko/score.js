@@ -6,10 +6,9 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 }
 
 
-const k = 3;
 
 function runAnalysis() {
-  const testSetSize = 10;
+  const testSetSize = 50;
   const [testSet, trainingSet] = splitDataset(outputs, testSetSize);
 
   //old implementation without lodash
@@ -22,19 +21,21 @@ function runAnalysis() {
   }
 
   console.log('Accuracy: ', numberCorrect / testSetSize)*/
+    _.range(1,15).forEach(k =>{
+        const accuracy = _.chain(testSet)
+            .filter(testPoint => knn(trainingSet, testPoint[0], k) === testPoint[3])
+            .size()
+            .divide(testSetSize)
+            .value();
 
-   const accuracy = _.chain(testSet)
-      .filter(testPoint => knn(trainingSet, testPoint[0]) === testPoint[3])
-      .size()
-      .divide(testSetSize)
-      .value();
+        console.log('For k of ', k , 'Accuracy is: ', accuracy);
+    });
 
-   console.log(accuracy);
 }
 
 
 
-function knn(dataset, point){
+function knn(dataset, point, k){
 return  _.chain(dataset)
       .map(row => [distance(row[0], point), row[3]])
       .sortBy(row => row[0])
