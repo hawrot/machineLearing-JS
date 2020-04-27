@@ -9,9 +9,8 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 const k = 3;
 
 function runAnalysis() {
-  const bucket =
+  const [testSet, trainingSet] = splitDataset(outputs, 10);
 
-  console.log('Point will fall into bucket: ' + bucket);
 }
 
 
