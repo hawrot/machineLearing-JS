@@ -21,6 +21,7 @@ function runAnalysis() {
   }
 
   console.log('Accuracy: ', numberCorrect / testSetSize)*/
+
     _.range(1,15).forEach(k =>{
         const accuracy = _.chain(testSet)
             .filter(testPoint => knn(trainingSet, testPoint[0], k) === testPoint[3])
@@ -50,7 +51,11 @@ return  _.chain(dataset)
 }
 
 function distance(pointA, pointB) {
-  return Math.abs(pointA - pointB);
+return _.chain(pointA)
+      .zip(pointB)
+      .map(([a,b]) => (a-b) ** 2)
+    .sum()
+    .value() ** 0.5;
 }
 
 function splitDataset(data, testCount){
