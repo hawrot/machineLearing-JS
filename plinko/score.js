@@ -84,4 +84,6 @@ function minMax(data, featureCount){
             clonedData[j][i] = (clonedData[j][i] - min) / (max - min);
         }
     }
+
+    return clonedData;
 }
