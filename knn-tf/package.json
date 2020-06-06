@@ -12,5 +12,8 @@
     "@tensorflow/tfjs-node": "^0.1.17",
     "lodash": "^4.17.11",
     "shuffle-seed": "^1.1.6"
+  },
+  "devDependencies": {
+    "@tensorflow/tfjs": "^2.0.0"
   }
 }
