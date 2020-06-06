@@ -28,14 +28,17 @@ features = tf.tensor(features);
 labels = tf.tensor(labels);
 
 
-
-const result = knn(features, labels, tf.tensor(testFeatures[0]), 10);
+testFeatures.forEach((testPoint, index) => {
+    const result = knn(features, labels, tf.tensor(testPoint), 10);
 
 //Calculating the error : (expected value - predicted value) / expected value
-const err = (testLabels[0][0] - result) / testLabels[0][0];
+    const err = (testLabels[index][0] - result) / testLabels[index][0];
 
 
-console.log('Guess ',  result + '   Value ' + testLabels[0][0]);
-console.log('Error : ' + err * 100);
+  //  console.log('Guess ',  result + '   Value ' + testLabels[0][0]);
+    console.log('Error : ' + err * 100);
+})
+
+
 
 
