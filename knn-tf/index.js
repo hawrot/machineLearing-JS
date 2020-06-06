@@ -31,6 +31,11 @@ labels = tf.tensor(labels);
 
 const result = knn(features, labels, tf.tensor(testFeatures[0]), 10);
 
+//Calculating the error : (expected value - predicted value) / expected value
+const err = (testLabels[0][0] - result) / testLabels[0][0];
+
+
 console.log('Guess ',  result + '   Value ' + testLabels[0][0]);
+console.log('Error : ' + err * 100);
 
 
