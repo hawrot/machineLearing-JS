@@ -21,6 +21,11 @@ gradientDescent = () => {
     const bSlope = _.sum(currentGuessesForMPG.map((guess, index) => {
         return guess - this.labels[index][0];
     })) * 2 / this.features.length;
+
+    const mSlope = _.sum(currentGuessesForMPG.map((guess, index) => {
+        return -1 * this.features[index][0] * (this.labels[index][0] - guess)
+    })) * 2 / this.features.length;
+
 }
 
 function train() {
