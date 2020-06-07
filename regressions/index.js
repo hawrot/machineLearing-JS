@@ -13,3 +13,9 @@ let { features, labels, testFeatures, testLabels } = loadCSV('./cars.csv', {
 //console.log(features);
 //console.log(labels);
 
+const regression = new LinearRegression(features, labels, {learningRate: 0.001, iterations: 1});
+
+regression.train(); //training
+
+console.log('Updated M is ', regression.m);
+console.log('Updated B is ', regression.b);
