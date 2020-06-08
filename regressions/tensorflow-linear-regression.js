@@ -29,7 +29,7 @@ class LinearRegression {
 
     train() {
         for (let i = 0; i < this.options.iterations; i++) {
-            console.log(this.options.learningRate);
+           // console.log(this.options.learningRate);
             this.gradientDescent();
             this.recordMSE();
             this.updateLearningRate();
