@@ -31,6 +31,12 @@ class LinearRegression {
         for (let i = 0; i < this.options.iterations; i++) {
             this.gradientDescent();
         }
+    }
+
+    test(testFeatures, testLabels) {
+        testFeatures = tf.tensor(testFeatures);
+        testLabels = tf.tensor(testLabels);
+
 
     }
 }
