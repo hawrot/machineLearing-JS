@@ -40,7 +40,17 @@ class LinearRegression {
         testFeatures = tf.ones([testFeatures.shape[0], 1]).concat(testFeatures, 1);
         const predictions = testFeatures.matMul(this.weights);
 
-        predictions.print();
+
+        //sum of squares of residuals
+        const res = testLabels.sub(predictions).pow(2).sum().get();
+
+        //total sum of squares
+        const tot = testLabels.sub(testLabels.mean()).pow(2).sum().get();
+
+        //Coefficient of Determination
+
+        return 1 - res / tot;
+
     }
 }
 
