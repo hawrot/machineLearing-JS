@@ -10,26 +10,21 @@ class LinearRegression {
 
         this.options = Object.assign({learningRate: 0.1, iterations: 1000}, options);
 
-       this.weights = tf.zeros([2,1]);
+        this.weights = tf.zeros([2, 1]);
     }
 
 
     gradientDescent() {
-        const currentGuessesForMPG = this.features.map(row => {
-            return this.m * row[0] + this.b;
-        });
+        //matMul() is a matrix multiplication
+        const currentGuesses = this.features.matMul(this.weights);
+        const differences = currentGuesses.sub(this.labels);
 
-        const bSlope = _.sum(currentGuessesForMPG.map((guess, index) => {
-            return guess - this.labels[index][0];
-        })) * 2 / this.features.length;
+        const slopes = this.features
+            .transpose()
+            .matMul(differences)
+            .div(this.features.shape[0])
 
-        const mSlope = _.sum(currentGuessesForMPG.map((guess, index) => {
-            return -1 * this.features[index][0] * (this.labels[index][0] - guess)
-        })) * 2 / this.features.length;
-
-        this.m = this.m - mSlope * this.options.learningRate;
-        this.b = this.b - bSlope * this.options.learningRate;
-
+        this.weights = this.weights.sub(slopes.mul(this.options.learningRate));
     }
 
     train() {
