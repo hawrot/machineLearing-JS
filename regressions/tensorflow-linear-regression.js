@@ -3,39 +3,99 @@ const _ = require('lodash');
 
 class LinearRegression {
     constructor(features, labels, options) {
-        this.features = features;
-        this.labels = labels;
+        this.features = this.processFeatures(features);
+        this.labels = tf.tensor(labels);
+        this.mseHistory = [];
+
 
         this.options = Object.assign({learningRate: 0.1, iterations: 1000}, options);
-        this.m = 0;
-        this.b = 0;
+
+        this.weights = tf.zeros([this.features.shape[1], 1]);
     }
 
 
     gradientDescent() {
-        const currentGuessesForMPG = this.features.map(row => {
-            return this.m * row[0] + this.b;
-        });
+        //matMul() is a matrix multiplication
+        const currentGuesses = this.features.matMul(this.weights);
+        const differences = currentGuesses.sub(this.labels);
 
-        const bSlope = _.sum(currentGuessesForMPG.map((guess, index) => {
-            return guess - this.labels[index][0];
-        })) * 2 / this.features.length;
+        const slopes = this.features
+            .transpose()
+            .matMul(differences)
+            .div(this.features.shape[0])
 
-        const mSlope = _.sum(currentGuessesForMPG.map((guess, index) => {
-            return -1 * this.features[index][0] * (this.labels[index][0] - guess)
-        })) * 2 / this.features.length;
-
-        this.m = this.m - mSlope * this.options.learningRate;
-        this.b = this.b - bSlope * this.options.learningRate;
-
+        this.weights = this.weights.sub(slopes.mul(this.options.learningRate));
     }
 
     train() {
         for (let i = 0; i < this.options.iterations; i++) {
+            console.log(this.options.learningRate);
             this.gradientDescent();
+            this.recordMSE();
+            this.updateLearningRate();
         }
+    }
+
+    test(testFeatures, testLabels) {
+        testFeatures = this.processFeatures(testFeatures);
+        testLabels = tf.tensor(testLabels);
+
+
+        const predictions = testFeatures.matMul(this.weights);
+
+
+        //sum of squares of residuals
+        const res = testLabels.sub(predictions).pow(2).sum().get();
+
+        //total sum of squares
+        const tot = testLabels.sub(testLabels.mean()).pow(2).sum().get();
+
+        //Coefficient of Determination
+
+        return 1 - res / tot;
 
     }
+
+    processFeatures(features) {
+        features = tf.tensor(features);
+
+
+        if (this.mean && this.variance) {
+            features = features.sub(this.mean).div(this.variance.pow(0.5));
+        } else {
+            features = this.standardize(features);
+        }
+        features = tf.ones([features.shape[0], 1]).concat(features, 1);
+
+        return features;
+    }
+
+    standardize(featues) {
+        const {mean, variance} = tf.moments(featues, 0);
+
+        this.mean = mean;
+        this.variance = variance;
+
+        return featues.sub(mean).div(variance.pow(0.5));
+    }
+
+    recordMSE() {
+        const mse = this.features.matMul(this.weights).sub(this.labels).pow(2).sum().div(this.features.shape[0]).get();
+        this.mseHistory.unshift(mse);
+    }
+
+    updateLearningRate() {
+        if (this.mseHistory.length < 2) {
+            return;
+        }
+        if (this.mseHistory[0] > this.mseHistory[1]) {
+            this.options.learningRate = this.options.learningRate / 2;
+        }else{
+            this.options.learningRate *= 1.05;
+        }
+    }
+
+
 }
 
 module.exports = LinearRegression;
