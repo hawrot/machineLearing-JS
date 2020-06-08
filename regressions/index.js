@@ -6,16 +6,16 @@ const LinearRegression = require('./tensorflow-linear-regression');
 let { features, labels, testFeatures, testLabels } = loadCSV('./cars.csv', {
     shuffle: true,
     splitTest: 50,
-    dataColumns: ['horsepower'],
+    dataColumns: ['horsepower', 'weight', 'displacement'],
     labelColumns: ['mpg']
 });
 
 //console.log(features);
 //console.log(labels);
 
-const regression = new LinearRegression(features, labels, {learningRate: 0.0001, iterations: 100});
+const regression = new LinearRegression(features, labels, {learningRate: 10, iterations: 100});
 
-regression.features.print();
+
 
 regression.train(); //training
 
