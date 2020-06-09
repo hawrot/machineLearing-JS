@@ -24,13 +24,6 @@ regression.train(); //training
 
 const r2 = regression.test(testFeatures, testLabels);
 
-plot({
-    x: regression.mseHistory.reverse(),
-    xLabel: 'Iteration #',
-    yLabel: 'Mean Squared Error'
-});
-
-
 
 console.log('R2 is : ', r2);
 regression.predict([
