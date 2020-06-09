@@ -23,7 +23,5 @@ const regression = new LogisticRegression(features, labels, {
 });
 
 regression.train();
-regression.predict([
+console.log(regression.test(testFeatures, testLabels));
 
-    [88,97,1.065]
-]).print()

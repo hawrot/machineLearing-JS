@@ -49,22 +49,12 @@ class LogisticRegression {
     }
 
     test(testFeatures, testLabels) {
-        testFeatures = this.processFeatures(testFeatures);
-        testLabels = tf.tensor(testLabels);
+      const predictions = this.predict(testFeatures).round();
+      testLabels = tf.tensor(testLabels);
 
+      const incorrect = predictions.sub(testLabels).abs().sum().get();
 
-        const predictions = testFeatures.matMul(this.weights);
-
-
-        //sum of squares of residuals
-        const res = testLabels.sub(predictions).pow(2).sum().get();
-
-        //total sum of squares
-        const tot = testLabels.sub(testLabels.mean()).pow(2).sum().get();
-
-        //Coefficient of Determination
-
-        return 1 - res / tot;
+      return (predictions.shape[0] - incorrect) / predictions.shape[0];
 
     }
 
