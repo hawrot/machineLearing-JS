@@ -6,7 +6,7 @@ class LinearRegression {
         this.features = this.processFeatures(features);
         this.labels = tf.tensor(labels);
         this.mseHistory = [];
-        this.bHistory = [];
+
 
 
         this.options = Object.assign({learningRate: 0.1, iterations: 1000}, options);
@@ -15,15 +15,15 @@ class LinearRegression {
     }
 
 
-    gradientDescent() {
+    gradientDescent(features, labels) {
         //matMul() is a matrix multiplication
-        const currentGuesses = this.features.matMul(this.weights);
-        const differences = currentGuesses.sub(this.labels);
+        const currentGuesses = features.matMul(this.weights);
+        const differences = currentGuesses.sub(labels);
 
-        const slopes = this.features
+        const slopes = features
             .transpose()
             .matMul(differences)
-            .div(this.features.shape[0])
+            .div(features.shape[0])
 
         this.weights = this.weights.sub(slopes.mul(this.options.learningRate));
     }
@@ -31,7 +31,6 @@ class LinearRegression {
     train() {
         for (let i = 0; i < this.options.iterations; i++) {
            // console.log(this.options.learningRate);
-            this.bHistory.push(this.weights.get(0,0));
             this.gradientDescent();
             this.recordMSE();
             this.updateLearningRate();

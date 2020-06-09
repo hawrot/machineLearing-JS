@@ -25,9 +25,8 @@ regression.train(); //training
 const r2 = regression.test(testFeatures, testLabels);
 
 plot({
-    x: regression.bHistory,
     y: regression.mseHistory.reverse(),
-    xLabel: 'Value of  B',
+    xLabel: 'Iteration #',
     yLabel: 'Mean Squared Error'
 });
 
