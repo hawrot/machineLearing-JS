@@ -16,5 +16,12 @@ const encodedLabels = mnistData.labels.values.map(label => {
     return row;
 });
 
+const regression = new LogisticRegression(features, encodedLabels, {
+    learningRate: 1,
+    iterations: 5,
+    batchSize: 100
+})
 
-console.log(encodedLabels);
+regression.train();
+
+
