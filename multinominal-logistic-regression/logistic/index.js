@@ -25,20 +25,13 @@ const {features, labels, testFeatures, testLabels} = loadCSV('../data/cars.csv',
     }
 });
 
-console.log(_.flatMap(labels));
 
-// const regression = new LogisticRegression(features, labels, {
-//     learningRate: 0.5,
-//     iterations: 100,
-//     batchSize: 50,
-//     decisionBoundary: .5
-//
-// });
-//
-// regression.train();
-// console.log(regression.test(testFeatures, testLabels));
-//
-// plot({
-//     x: regression.costHistory.reverse(),
-//     xLabel: 'Cost History'
-// })
+const regression = new LogisticRegression(features, _.flatMap(labels), {
+    learningRate: 0.5,
+    iterations: 100,
+    batchSize: 50
+
+});
+
+regression.train();
+regression.predict([[150, 200, 2.223]]).print();
