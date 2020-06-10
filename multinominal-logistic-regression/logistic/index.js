@@ -6,7 +6,7 @@ const plot = require('node-remote-plot');
 const _ = require('lodash');
 const mnist = require('mnist-data');
 
-const mnistData = mnist.training(0,5000);
+const mnistData = mnist.training(0,60000);
 
 const features = mnistData.images.values.map(image => _.flatMap(image));
 
@@ -37,3 +37,7 @@ const testEncodedLabels = testMnistData.labels.values.map(label => {
 const accuracy = regression.test(testFeatures, testEncodedLabels);
 
 console.log('Acc ', accuracy);
+
+
+
+//node --max-old-space-size=4096 index.js//
