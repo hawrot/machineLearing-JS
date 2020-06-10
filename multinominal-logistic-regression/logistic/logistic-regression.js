@@ -50,16 +50,16 @@ class LogisticRegression {
 
     test(testFeatures, testLabels) {
       const predictions = this.predict(testFeatures);
-      testLabels = tf.tensor(testLabels);
+      testLabels = tf.tensor(testLabels).argMax(1);
 
-      const incorrect = predictions.sub(testLabels).abs().sum().get();
+      const incorrect = predictions.notEqual(testLabels).sum().get();
 
       return (predictions.shape[0] - incorrect) / predictions.shape[0];
 
     }
 
     predict(observations){
-        return  this.processFeatures(observations).matMul(this.weights).softmax().greater(this.options.decisionBoundary).cast('float32');
+        return  this.processFeatures(observations).matMul(this.weights).softmax().argMax(1);
     }
 
     processFeatures(features) {
@@ -86,7 +86,7 @@ class LogisticRegression {
     }
 
     recordCost() {
-        const guesses = this.features.matMul(this.weights).softmax();
+        const guesses = this.features.matMul(this.weights).sigmoid();
         const termOne = this.labels.transpose().matMul(guesses.log());
 
         const termTwo = this.labels.mul(-1).add(1).transpose().matMul(guesses.mul(-1).add(1).log());
