@@ -26,8 +26,8 @@ const {features, labels } = loadData();
 
 const regression = new LogisticRegression(features, labels, {
     learningRate: 1,
-    iterations: 20,
-    batchSize: 100
+    iterations: 40,
+    batchSize: 500
 })
 
 regression.train();
