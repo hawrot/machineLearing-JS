@@ -6,20 +6,28 @@ const plot = require('node-remote-plot');
 const _ = require('lodash');
 const mnist = require('mnist-data');
 
-const mnistData = mnist.training(0,5000);
+function loadData() {
+    const mnistData = mnist.training(0,10000);
 
-const features = mnistData.images.values.map(image => _.flatMap(image));
+    const features = mnistData.images.values.map(image => _.flatMap(image));
 
-const encodedLabels = mnistData.labels.values.map(label => {
-    const row = new Array(10).fill(0);
-    row[label] = 1;
-    return row;
-});
+    const encodedLabels = mnistData.labels.values.map(label => {
+        const row = new Array(10).fill(0);
+        row[label] = 1;
+        return row;
+    });
 
-const regression = new LogisticRegression(features, encodedLabels, {
+    return {features, labels: encodedLabels};
+}
+
+const {features, labels } = loadData();
+
+
+
+const regression = new LogisticRegression(features, labels, {
     learningRate: 1,
-    iterations: 20,
-    batchSize: 100
+    iterations: 40,
+    batchSize: 500
 })
 
 regression.train();
@@ -37,3 +45,10 @@ const testEncodedLabels = testMnistData.labels.values.map(label => {
 const accuracy = regression.test(testFeatures, testEncodedLabels);
 
 console.log('Acc ', accuracy);
+
+plot({
+    x: regression.costHistory.reverse()
+})
+
+
+//node --max-old-space-size=4096 index.js//
