@@ -7,7 +7,7 @@ const _ = require('lodash');
 const mnist = require('mnist-data');
 
 function loadData() {
-    const mnistData = mnist.training(0,60000);
+    const mnistData = mnist.training(0,10000);
 
     const features = mnistData.images.values.map(image => _.flatMap(image));
 
@@ -46,6 +46,9 @@ const accuracy = regression.test(testFeatures, testEncodedLabels);
 
 console.log('Acc ', accuracy);
 
+plot({
+    x: regression.costHistory.reverse()
+})
 
 
 //node --max-old-space-size=4096 index.js//
